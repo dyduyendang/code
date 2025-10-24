@@ -1,0 +1,443 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Arial, Helvetica, sans-serif
+
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;}
+header {
+    display: flex;
+    justify-self: space-between;
+    padding: 12px 50px;
+    height: 70px;
+    align-items: center;
+   
+}
+.logo {
+    flex: 0 2;
+}
+.menu {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu > li {
+    padding: 0 12px;
+    position: relative;
+}
+
+.menu > li > a {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    padding: 15px 0;
+    transition: all 0.3s ease;
+}
+
+.menu > li > a:hover {
+    color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+.menu > li > a:active {
+    transform: scale(0.95);
+    color: #3d8b40;
+}
+
+/* Dropdown Menu Styles */
+.sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 200px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.menu li:hover .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sub-menu li {
+    padding: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.sub-menu li:last-child {
+    border-bottom: none;
+}
+
+.sub-menu a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 13px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.sub-menu a:hover {
+    color: #4CAF50;
+    background: #f8f8f8;
+    padding-left: 25px;
+}
+
+.sub-menu a:active {
+    background: #e8e8e8;
+    color: #3d8b40;
+    transform: scale(0.98);
+}
+
+/* Add active state styles for clicked menu items */
+.menu > li > a.active,
+.sub-menu a.active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+.other {
+    flex: 1;
+    display: flex;
+    align-items: center; /* vertically center everything in the other area */
+    gap: 12px;
+    flex-wrap: nowrap; /* prevent wrapping so items stay on one horizontal line */
+}
+.other > li {
+    padding: 0 6px;
+}
+
+/* make list items and icon links inside .other align perfectly */
+.other li,
+.icon-container li {
+    display: flex;
+    align-items: center;
+}
+
+.icon-container {
+    display: flex;
+    flex-direction: row; /* ensure icons are in a horizontal row */
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap; /* prevent icons from wrapping to next line */
+}
+
+.icon-container li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.icon-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    color: inherit;
+}
+
+.icon-container a:hover {
+    background: rgba(0,0,0,0.03);
+}
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-container input {
+    width: 200px;
+    padding: 8px 30px 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus {
+    width: 250px;
+    border-color: #4CAF50;
+}
+
+.search-container .fa-search {
+    position: absolute;
+    right: 12px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus + .fa-search,
+.search-container .fa-search:hover {
+    color: #4CAF50;
+}
+
+/* Search control styles */
+#product-search {
+    width: 220px;
+}
+
+#search-btn {
+    right: 12px; /* ensure positioned inside container */
+}
+
+#clear-search {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.no-results {
+    text-align: center;
+    color: #777;
+    margin-top: 18px;
+    font-size: 16px;
+}
+
+/* 16:9 aspect ratio helper (for iframes or images) */
+.aspect-ratio-169 {
+    display: block;
+    position: relative;
+    padding-top: 56.25%; /* 9/16 = 56.25% */
+    width: 100%;
+}
+
+.aspect-ratio-169 iframe,
+.aspect-ratio-169 img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: contain; /* show whole image/iframe content without cropping */
+}
+
+/* Slider Styles (preserve image aspect ratio) */
+
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: visible; /* allow shadow outside while inner slider is centered */
+    background: transparent;
+    padding: 20px 0; /* give vertical breathing room */
+}
+
+.slider-inner {
+    max-width: 1200px;
+    width: calc(100% - 140px);
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(16,24,40,0.06);
+}
+
+.slider-content {
+    position: relative;
+    width: 100%;
+    height: 480px; /* desktop default */
+}
+
+.slide {
+    position: absolute;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: scale(1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.slide img {
+    width: auto;
+    height: 100%;
+    object-fit: contain; /* show the whole image */
+    display: block;
+    background: #fff; /* letterbox color for empty space */
+}
+
+/* Ensure slider images show fully (no cropping):
+   - make slide a flex container and center the img
+   - adjust the aspect-ratio helper inside slides so image fits within slider height
+   - use object-fit: contain so whole image is visible */
+.slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide .aspect-ratio-169 {
+    /* remove the padding-top hack inside slider slides so the wrapper can use full height */
+    padding-top: 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.slide .aspect-ratio-169 img {
+    position: relative; /* don't absolutely position so object-fit:contain can work reliably */
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.slide-text {
+    position: absolute;
+    bottom: 18%;
+    left: 6%;
+    transform: none;
+    text-align: left;
+    color: #222;
+    text-shadow: none;
+    max-width: 48%;
+    background: rgba(255,255,255,0.6);
+    padding: 18px 22px;
+    border-radius: 8px;
+}
+
+
+.slide-text h2 {
+    font-size: 44px;
+    margin-bottom: 12px;
+}
+
+.slide-text p {
+    font-size: 18px;
+    margin-bottom: 18px;
+    opacity: 0.95;
+}
+
+.slide-text button {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.slide-text button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* Slider Controls */
+.slider-controls {
+    position: absolute;
+    bottom: 26px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.prev-btn,
+.next-btn {
+    background-color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(0,0,0,0.06);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.18s ease, background-color 0.18s ease, opacity 0.18s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+.prev-btn { left: 14px }
+.next-btn { right: 14px }
+
+.prev-btn:hover,
+.next-btn:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.prev-btn i,
+.next-btn i { color: #444; font-size: 18px }
+
+.slider-dots {
+    display: flex;
+    gap: 10px;
+}
+
+
+.slider-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 40;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.18s ease, background-color 0.18s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+.dot.active, .dot:hover { background-color: rgba(0,0,0,0.28); transform: scale(1.05) }
+
+/* Responsive slider heights */
+@media (max-width: 1100px) {
+    .slider-content { height: 420px }
+    .slider-inner { width: calc(100% - 60px) }
+    .slide-text { max-width: 58% }
+}
+
+@media (max-width: 800px) {
+    .slider-content { height: 320px }
+    .slider-inner { width: calc(100% - 40px) }
+    .slide-text { max-width: 68%; left: 6% }
+    .slide-text h2 { font-size: 28px }
+    .slide-text p { font-size: 14px }
+}
+
+@media (max-width: 420px) {
+    .slider-content { height: 220px }
+    .slide-text { display: none }
+    .prev-btn, .next-btn { display: none }
+}
