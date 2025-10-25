@@ -3,38 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+        <meta name="description" content="IVY moda - Thời trang cao cấp dành cho phái đẹp. Khám phá các bộ sưu tập mới nhất và xu hướng thời trang mới nhất.">
+        <meta name="keywords" content="thời trang, thời trang nữ, ivy moda, thời trang cao cấp, đầm, áo dài, quần áo">
+        <meta name="author" content="IVY moda">
+        <meta property="og:title" content="IVY moda - Thời trang cao cấp"> 
+        <meta property="og:description" content="Thời trang cao cấp dành cho phái đẹp. Khám phá BST mới nhất.">
+        <meta property="og:image" content="images/logo.png">
+        <link rel="icon" type="image/png" href="images/favicon.png">
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <title>IVY moda - Thời trang cao cấp</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="gallery.css">
+    <link rel="stylesheet" href="gallery.css">
+    <script src="js/analytics.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý click cho menu chính và submenu
-            const menuLinks = document.querySelectorAll('.menu a');
+            // Xử lý menu và submenu
+            const menu = document.querySelector('.menu');
+            const menuItems = menu.querySelectorAll('li');
             
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    // Chỉ prevent default nếu không có href hoặc href là #
-                    if (!href || href === '#' || href === '') {
-                        e.preventDefault();
-                    } else {
-                        // Có URL thực, cho phép chuyển hướng và không thêm active
-                        return;
+            menuItems.forEach(item => {
+                const link = item.querySelector('a');
+                const submenu = item.querySelector('.sub-menu');
+                
+                if (submenu) {
+                    // Xử lý hover cho menu chính
+                    item.addEventListener('mouseenter', function() {
+                        submenu.style.display = 'block';
+                        submenu.style.opacity = '1';
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        submenu.style.display = 'none';
+                        submenu.style.opacity = '0';
+                    });
+                    
+                    // Xử lý click vào menu chính
+                    link.addEventListener('click', function(e) {
+                        if (this.getAttribute('href') === '#' || !this.getAttribute('href')) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    // Xử lý click vào submenu items
+                    const submenuLinks = submenu.querySelectorAll('a');
+                    submenuLinks.forEach(sublink => {
+                        sublink.addEventListener('click', function(e) {
+                            // Lưu đường dẫn đã click vào localStorage
+                            localStorage.setItem('lastVisitedCategory', this.getAttribute('href'));
+                            
+                            // Cho phép chuyển trang bình thường
+                            return true;
+                        });
+                    });
+                }
+            });
+
+            // Highlight menu item dựa trên trang hiện tại
+            const currentPath = window.location.pathname;
+            const allLinks = menu.querySelectorAll('a');
+            
+            allLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && currentPath.includes(href)) {
+                    link.classList.add('active');
+                    // Nếu là submenu item, highlight luôn menu cha
+                    const parentLi = link.closest('.sub-menu')?.parentElement;
+                    if (parentLi) {
+                        parentLi.querySelector('> a').classList.add('active');
                     }
-                    
-                    // Remove active class from all links
-                    menuLinks.forEach(l => l.classList.remove('active'));
-                    
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Nếu click vào submenu item, giữ dropdown menu visible
-                    if (this.closest('.sub-menu')) {
-                        const parentLink = this.closest('li').querySelector('a');
-                        parentLink.classList.add('active');
-                    }
-                });
+                }
             });
         });
     </script>
@@ -46,83 +85,72 @@
         </div>
         <div class="menu">
             <li>
-                <a href="/nu">NỮ</a>
+                <a href="#">NỮ</a>
                 <ul class="sub-menu">
-                    <li><a href="/nu/ao">Áo</a></li>
-                    <li><a href="/nu/quan">Quần</a></li>
-                    <li><a href="/nu/vay">Váy</a></li>
-                    <li><a href="/nu/phu-kien">Phụ kiện</a></li>
+                    <li><a href="nu/ao.html" onclick="saveCategory('nu-ao')">Áo</a></li>
+                    <li><a href="nu/quan.html" onclick="saveCategory('nu-quan')">Quần</a></li>
+                    <li><a href="nu/vay.html" onclick="saveCategory('nu-vay')">Váy</a></li>
+                    <li><a href="nu/phu-kien.html" onclick="saveCategory('nu-phukien')">Phụ kiện</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/nam">NAM</a>
+                <a href="#">NAM</a>
                 <ul class="sub-menu">
-                    <li><a href="/nam/ao">Áo</a></li>
-                    <li><a href="/nam/quan">Quần</a></li>
-                    <li><a href="/nam/giay">Giày</a></li>
-                    <li><a href="/nam/phu-kien">Phụ kiện</a></li>
+                    <li><a href="nam/ao.html" onclick="saveCategory('nam-ao')">Áo</a></li>
+                    <li><a href="nam/quan.html" onclick="saveCategory('nam-quan')">Quần</a></li>
+                    <li><a href="nam/giay.html" onclick="saveCategory('nam-giay')">Giày</a></li>
+                    <li><a href="nam/phu-kien.html" onclick="saveCategory('nam-phukien')">Phụ kiện</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/tre-em">TRẺ EM</a>
+                <a href="tre-em">TRẺ EM</a>
                 <ul class="sub-menu">
-                    <li><a href="/tre-em/ao">Áo</a></li>
-                    <li><a href="/tre-em/quan">Quần</a></li>
-                    <li><a href="/tre-em/do-bo">Đồ bộ</a></li>
-                    <li><a href="/tre-em/phu-kien">Phụ kiện</a></li>
+                    <li><a href="tre-em/ao.html">Áo</a></li>
+                    <li><a href="tre-em/quan.html">Quần</a></li>
+                    <li><a href="tre-em/do-bo.html">Đồ bộ</a></li>
+                    <li><a href="tre-em/phu-kien.html">Phụ kiện</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/sale">SALE</a>
+                <a href="sale">SALE</a>
                 <ul class="sub-menu">
-                    <li><a href="/sale/50">Sale 50%</a></li>
-                    <li><a href="/sale/30">Sale 30%</a></li>
-                    <li><a href="/sale/clearance">Clearance</a></li>
+                    <li><a href="sale/50.html">Sale 50%</a></li>
+                    <li><a href="sale/30.html">Sale 30%</a></li>
+                    <li><a href="sale/clearance.html">Clearance</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/khau-trang">KHẨU TRANG</a>
+                <a href="khau-trang">KHẨU TRANG</a>
                 <ul class="sub-menu">
-                    <li><a href="/khau-trang/vai">Khẩu trang vải</a></li>
-                    <li><a href="/khau-trang/y-te">Khẩu trang y tế</a></li>
+                    <li><a href="khau-trang/vai.html">Khẩu trang vải</a></li>
+                    <li><a href="khau-trang/y-te.html">Khẩu trang y tế</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/bo-suu-tap">BỘ SƯU TẬP</a>
+                <a href="bo-suu-tap">BỘ SƯU TẬP</a>
                 <ul class="sub-menu">
-                    <li><a href="/bo-suu-tap/xuan-he">Xuân Hè</a></li>
-                    <li><a href="/bo-suu-tap/thu-dong">Thu Đông</a></li>
-                    <li><a href="/bo-suu-tap/limited">Limited Edition</a></li>
+                    <li><a href="bo-suu-tap/xuan-he.html">Xuân Hè</a></li>
+                    <li><a href="bo-suu-tap/thu-dong.html">Thu Đông</a></li>
+                    <li><a href="bo-suu-tap/limited.html">Limited Edition</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/thong-tin">THÔNG TIN</a>
+                <a href="thong-tin">THÔNG TIN</a>
                 <ul class="sub-menu">
-                    <li><a href="/thong-tin/ve-chung-toi">Về chúng tôi</a></li>
-                    <li><a href="/thong-tin/lien-he">Liên hệ</a></li>
-                    <li><a href="/thong-tin/chinh-sach">Chính sách</a></li>
+                    <li><a href="thong-tin/ve-chung-toi.html">Về chúng tôi</a></li>
+                    <li><a href="thong-tin/lien-he.html">Liên hệ</a></li>
+                    <li><a href="thong-tin/chinh-sach.html">Chính sách</a></li>
                 </ul>
             </li>
         </div>
         <div class="other">
                 <li class="search-container">
-                    <input id="product-search" type="text" placeholder="Tìm kiếm..." autocomplete="off">
-                    <i id="search-btn" class="fas fa-search" title="Tìm kiếm"></i>
-                    <i id="clear-search" class="fas fa-times" title="Xóa" style="display:none;margin-left:8px;color:#666;cursor:pointer"></i>
-
-                    <div class="search-suggestions" role="listbox" aria-label="Gợi ý tìm kiếm">
-                        <button class="suggestion" data-keyword="Đầm">Đầm</button>
-                        <button class="suggestion" data-keyword="trễ vai">trễ vai</button>
-                        <button class="suggestion" data-keyword="Áo khoác">Áo khoác</button>
-                        <button class="suggestion" data-keyword="Quần">Quần</button>
-                        <button class="suggestion" data-keyword="Áo sơ mi">Áo sơ mi</button>
-                        <button class="suggestion" data-keyword="Vest">Vest</button>
-                        <button class="suggestion" data-keyword="parka">parka</button>
-                        <button class="suggestion" data-keyword="tweed">tweed</button>
-                        <button class="suggestion" data-keyword="croptop">croptop</button>
-                        <button class="suggestion" data-keyword="Chân váy">Chân váy</button>
-                        <button class="suggestion" data-keyword="lông cừu">lông cừu</button>
-                    </div>
+                    <form id="search-form" onsubmit="handleSearch(event)">
+                        <input id="product-search" type="text" placeholder="Tìm kiếm: áo, quần, váy, đầm, phụ kiện..." autocomplete="off">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search" title="Tìm kiếm"></i>
+                        </button>
+                    </form>
                 </li>
                 <div class="icon-container">
                     <li>
@@ -131,13 +159,17 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="user-icon" onclick="handleUserClick()">
-                            <i class="fas fa-user"></i>
-                        </a>
+                        <div class="user-area">
+                            <!-- Static fallback: clicking icon goes to login page -->
+                            <a href="login.html" class="user-icon" title="Đăng nhập">
+                                <i class="fas fa-user"></i>
+                            </a>
+                        </div>
                     </li>
                     <li>
-                        <a href="#" class="cart-icon cart-count" onclick="handleCartClick()">
+                        <a href="cart.html" class="cart-icon" title="Giỏ hàng">
                             <i class="fas fa-shopping-bag"></i>
+                            <span class="cart-count-badge" style="background:#ff4d4f;color:white;border-radius:50%;padding:2px 7px;margin-left:6px;font-size:12px;">0</span>
                         </a>
                     </li>
                 </div>
@@ -150,20 +182,20 @@
             <div class="slider-content">
                 <div class="slide active">
                     <div class="aspect-ratio-169">
-                        <img src="images/slider1.jpg" alt="Slider 1">
+                           <img src="images/slider1.jpg" alt="BST Thu Đông 2025 - Elegant Bloom" loading="lazy">
                     </div>
                     
                 </div>
                 <div class="slide">
                     <div class="aspect-ratio-169">
-                        <img src="images/slider2.jpg" alt="Slider 2">
+                           <img src="images/slider2.jpg" alt="BST Xuân Hè 2025 - Summer Breeze" loading="lazy">
                     </div>
                     
                     
                 </div>
                 <div class="slide">
                     <div class="aspect-ratio-169">
-                        <img src="images/slider3.jpg" alt="Slider 3">
+                           <img src="images/slider3.jpg" alt="Sale Up To 50% - Black Friday" loading="lazy">
                     </div>
                     
                 </div>
@@ -353,7 +385,107 @@
             </div>
         </div>
     </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Về IVY moda</h3>
+                <ul>
+                    <li><a href="thong-tin/ve-chung-toi.html">Giới thiệu</a></li>
+                    <li><a href="thong-tin/lien-he.html">Liên hệ</a></li>
+                       <li><a href="tin-tuc/tuyen-dung.html">Tuyển dụng</a></li>
+                       <li><a href="tin-tuc/index.html">Tin tức</a></li>
+                       <li><a href="thong-tin/he-thong-cua-hang.html">Hệ thống cửa hàng</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Hỗ trợ khách hàng</h3>
+                <ul>
+                       <li><a href="thong-tin/huong-dan-chon-size.html">Hướng dẫn chọn size</a></li>
+                       <li><a href="thong-tin/khach-hang-vip.html">Chính sách khách hàng VIP</a></li>
+                       <li><a href="thong-tin/chinh-sach-doi-tra.html">Chính sách đổi trả</a></li>
+                       <li><a href="thong-tin/chinh-sach-bao-mat.html">Chính sách bảo mật</a></li>
+                       <li><a href="thong-tin/thanh-toan-giao-nhan.html">Thanh toán, giao nhận</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Liên hệ</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> Hotline: 0123 456 789</p>
+                    <p><i class="fas fa-envelope"></i> Email: cs@ivymoda.vn</p>
+                    <p><i class="fas fa-map-marker-alt"></i> TP.HCM</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Đăng ký nhận tin</h3>
+                <p style="color: #999; margin-bottom: 15px">Nhận thông tin sản phẩm mới nhất, tin khuyến mãi và nhiều hơn nữa.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email của bạn" required>
+                    <button type="submit">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 IVY moda All rights reserved</p>
+            <div class="payment-methods">
+                <img src="images/payment/visa.png" alt="Visa">
+                <img src="images/payment/mastercard.png" alt="Mastercard">
+                <img src="images/payment/jcb.png" alt="JCB">
+                <img src="images/payment/momo.png" alt="Momo">
+                <img src="images/payment/vnpay.png" alt="VNPay">
+            </div>
+        </div>
+    </footer>
+
     <script>
+            // Hàm tìm kiếm và chuyển hướng đến trang danh mục
+            function handleSearch(event) {
+                if (event && event.preventDefault) event.preventDefault();
+                const searchInput = document.getElementById('product-search');
+                if (!searchInput) return;
+
+                // Normalize function: remove diacritics and lowercase for robust matching
+                function normalize(str) {
+                    return str
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLowerCase();
+                }
+
+                const searchTerm = normalize(searchInput.value.trim());
+
+                // Danh sách danh mục (key = keyword to match after normalization)
+                const categories = {
+                    'dam': 'nu/vay.html',
+                    'vay': 'nu/vay.html',
+                    'ao': 'nu/ao.html',
+                    'quan': 'nu/quan.html',
+                    'phu kien': 'nu/phu-kien.html',
+                    'phukien': 'nu/phu-kien.html',
+                    'phuk':'nu/phu-kien.html' // short for phụ kiện
+                };
+
+                for (let key in categories) {
+                    if (searchTerm.includes(normalize(key))) {
+                        window.location.href = categories[key];
+                        return;
+                    }
+                }
+
+                // Nếu không tìm thấy
+                alert('Không tìm thấy danh mục. Vui lòng thử tìm: áo, quần, váy, đầm, phụ kiện');
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 // Slider functionality (fade, pause on hover, reset interval on interaction)
                 const slides = document.querySelectorAll('.slide');
@@ -442,99 +574,150 @@
                     });
                 });
 
-                // Product search (filter product cards and gallery items)
-                const searchInput = document.getElementById('product-search');
-                const searchBtn = document.getElementById('search-btn');
-                const clearBtn = document.getElementById('clear-search');
-                const noResultsEl = document.createElement('div');
-                noResultsEl.className = 'no-results';
-                noResultsEl.style.display = 'none';
-                noResultsEl.textContent = 'Không tìm thấy sản phẩm.';
-                document.querySelector('.container').appendChild(noResultsEl);
+                // Hàm tìm kiếm và chuyển hướng đến sản phẩm
+                function searchProduct(event) {
+                    event.preventDefault();
+                    const searchInput = document.getElementById('product-search');
+                    const searchTerm = searchInput.value.trim().toLowerCase();
 
-                function getCardText(el) {
-                    // try product-title, alt text, or overlay title
-                    const title = el.querySelector('.product-title');
-                    if (title && title.textContent.trim()) return title.textContent.trim();
-                    const img = el.querySelector('img');
-                    if (img && img.alt) return img.alt;
-                    const overlay = el.querySelector('.gallery-overlay h3');
-                    if (overlay) return overlay.textContent.trim();
-                    return '';
-                }
+                    // Danh sách sản phẩm và đường dẫn
+                    const products = {
+                        'dam': 'products/dam-xoe-elegant-simplicity.html',
+                        'đầm': 'products/dam-xoe-elegant-simplicity.html',
+                        'vay': 'products/chan-vay-but-chi-elegant-bloom.html',
+                        'váy': 'products/chan-vay-but-chi-elegant-bloom.html',
+                        'ao': 'products/ao-tweed-lilac-elegance.html',
+                        'áo': 'products/ao-tweed-lilac-elegance.html',
+                        'quan': 'products/quan-tay-ong-suong-adele.html',
+                        'quần': 'products/quan-tay-ong-suong-adele.html'
+                    };
 
-                function performSearch() {
-                    const q = searchInput.value.trim().toLowerCase();
-                    const productCards = document.querySelectorAll('.product-card');
-                    const galleryItems = document.querySelectorAll('.gallery-item');
-                    let shown = 0;
-
-                    if (!q) {
-                        // show all
-                        productCards.forEach(c => c.style.display = 'flex');
-                        galleryItems.forEach(g => g.style.display = 'block');
-                        noResultsEl.style.display = 'none';
-                        clearBtn.style.display = 'none';
-                        return;
-                    }
-
-                        productCards.forEach(c => {
-                            const text = getCardText(c).toLowerCase();
-                            if (text.includes(q)) { c.style.display = 'flex'; shown++; } else { c.style.display = 'none'; }
-                        });
-                    galleryItems.forEach(g => {
-                        const text = getCardText(g).toLowerCase();
-                        if (text.includes(q)) { g.style.display = 'block'; shown++; } else { g.style.display = 'none'; }
-                    });
-
-                    if (shown === 0) { noResultsEl.style.display = 'block'; } else { noResultsEl.style.display = 'none'; }
-                    clearBtn.style.display = 'inline-block';
-
-                    // If there's exactly one product-card visible and it has a data-url, redirect to it when search was triggered by Enter or search button
-                    if (shown === 1) {
-                        // find visible product card first
-                        const visibleCard = Array.from(productCards).find(c => c.style.display !== 'none');
-                        if (visibleCard && visibleCard.dataset && visibleCard.dataset.url) {
-                            // redirect after a short delay so the user sees the result briefly
-                            setTimeout(() => { window.location.href = visibleCard.dataset.url; }, 200);
+                    // Tìm sản phẩm phù hợp
+                    for (let key in products) {
+                        if (searchTerm.includes(key)) {
+                            window.location.href = products[key];
+                            return;
                         }
                     }
+
+                    // Nếu không tìm thấy
+                    alert('Không tìm thấy sản phẩm. Vui lòng thử tìm: đầm, váy, áo, quần');
+                }
+                // Simplified search handlers: route to category pages via the global handleSearch
+                const searchInput = document.getElementById('product-search');
+                const searchForm = document.getElementById('search-form');
+                const searchBtn = document.querySelector('.search-btn');
+
+                if (searchForm) {
+                    searchForm.addEventListener('submit', function(e){
+                        e.preventDefault();
+                        handleSearch(e);
+                    });
                 }
 
-                searchBtn.addEventListener('click', performSearch);
-                searchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { performSearch(); } });
-                
-                // Make product cards clickable (navigate to product page), but don't trigger when clicking cart button
-                const allProductCards = document.querySelectorAll('.product-card');
-                allProductCards.forEach(card => {
-                    card.addEventListener('click', function(e) {
-                        if (e.target.closest('.cart-btn')) return; // don't navigate when clicking cart
-                        const url = card.dataset.url;
-                        if (url) window.location.href = url;
+                if (searchBtn) {
+                    searchBtn.addEventListener('click', function(e){
+                        e.preventDefault();
+                        handleSearch(e);
                     });
-                });
-                clearBtn.addEventListener('click', function() { searchInput.value = ''; performSearch(); clearBtn.style.display='none'; searchInput.focus(); });
+                }
 
-                // Popular tag clicks: fill input and run search
-                const popularTags = document.querySelectorAll('.popular-tag');
-                popularTags.forEach(tag => {
-                    tag.addEventListener('click', function() {
-                        const keyword = this.getAttribute('data-keyword') || this.textContent;
-                        searchInput.value = keyword;
-                        performSearch();
+                if (searchInput) {
+                    // Enter key should trigger category search
+                    searchInput.addEventListener('keydown', function(e){
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleSearch(e);
+                        }
                     });
-                });
+                }
+            });
+    </script>
+    <script src="app.js"></script>
+    <script>
+        // Hàm lưu category đã chọn
+        function saveCategory(category) {
+            localStorage.setItem('currentCategory', category);
+        }
 
-                // Suggestions inside search box
-                const suggestionButtons = document.querySelectorAll('.search-suggestions .suggestion');
-                suggestionButtons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        const kw = this.getAttribute('data-keyword') || this.textContent;
-                        searchInput.value = kw;
-                        performSearch();
+        // Kiểm tra và highlight category hiện tại
+        function highlightCurrentCategory() {
+            const currentCategory = localStorage.getItem('currentCategory');
+            if (currentCategory) {
+                const allLinks = document.querySelectorAll('.menu a');
+                allLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href.includes(currentCategory.split('-')[1])) {
+                        link.classList.add('active');
+                        // Highlight menu cha nếu đang ở submenu
+                        const parentMenu = link.closest('.sub-menu');
+                        if (parentMenu) {
+                            const parentLink = parentMenu.parentElement.querySelector('> a');
+                            parentLink.classList.add('active');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Track page view when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            APP_ANALYTICS.trackPageView('Trang chủ', window.location.pathname);
+
+            // Track product views
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.cart-btn')) {
+                        const title = card.querySelector('.product-title').textContent;
+                        const price = parseFloat(card.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                        APP_ANALYTICS.trackProductView({
+                            id: card.dataset.url,
+                            name: title,
+                            price: price
+                        });
+                    }
+                });
+            });
+
+            // Track add to cart events
+            document.querySelectorAll('.cart-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const card = btn.closest('.product-card');
+                    const title = card.querySelector('.product-title').textContent;
+                    const price = parseFloat(card.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                    APP_ANALYTICS.trackAddToCart({
+                        id: card.dataset.url,
+                        name: title,
+                        price: price,
+                        quantity: 1
                     });
                 });
             });
+
+            // Track wishlist events
+            document.querySelectorAll('.wish-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const card = btn.closest('.product-card');
+                    const title = card.querySelector('.product-title').textContent;
+                    const price = parseFloat(card.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                    APP_ANALYTICS.trackAddToWishlist({
+                        id: card.dataset.url,
+                        name: title,
+                        price: price
+                    });
+                });
+            });
+
+            // Track search events
+            const searchInput = document.getElementById('product-search');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    APP_ANALYTICS.trackSearch(this.value.trim());
+                }
+            });
+        });
     </script>
 </body>
 </html>
